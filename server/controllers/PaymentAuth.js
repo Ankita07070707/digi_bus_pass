@@ -21,9 +21,13 @@ exports.checkout = async (req, res, next) => {
 
     const order = await razorpay.orders.create(options);
 
+    // Extract amount from the order response
+    const amount = order.amount / 100;
+
     return res.status(201).json({
       success: true,
       order,
+      amount,
     });
   } catch (error) {
     return res.status(400).json({
@@ -61,11 +65,19 @@ exports.paymentVerification = async (req, res) => {
       );
       console.log("Payment Details: ", PaymentProfile);
 
+      const razorpayPayment = await razorpay.payments.fetch(
+        razorpay_payment_id
+      );
+      // console.log("Razorpay Payment Object:", razorpayPayment);
+      const amount = razorpayPayment.amount / 100;
+      // console.log("Amount:", amount);
+
       // Store payment details in the database
       const paymentDetails = {
         razorpay_order_id,
         razorpay_payment_id,
         razorpay_signature,
+        amount,
         createdAt: Date.now(),
       };
 
