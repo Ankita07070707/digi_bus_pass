@@ -16,6 +16,7 @@ import Logout from "./components//auth/logout";
 import Payment from "./components/Payment/Payment";
 import BusPass from "./components/BusPass/BussPass";
 import GetPass from "./components/BusPass/GetPass";
+import UserBusPass from "./components/Dashboard/UserBusPass.jsx";
 import NotFound from "./components/Home/NotFound";
 import PaymentSuccess from "./components/Payment/PaymentSuccess.jsx";
 import ForgotPassword from "./components/auth/forgotPassword.jsx";
@@ -68,6 +69,15 @@ function App() {
               isUserAuthenticated() ? <GetPass /> : <Navigate to="/login" />
             }
           />
+
+          {/* user pass  */}
+          <Route
+            path="/dashboard/userbuspass"
+            element={
+              isUserAuthenticated() ? <UserBusPass /> : <Navigate to="/login" />
+            }
+          />
+
           <Route
             path="/payment/paymentverification"
             element={
@@ -78,6 +88,7 @@ function App() {
               )
             }
           />
+
           {/* <Route path="/buspass/info" element={isUserAuthenticated() ? <Profile /> : <Navigate to="/login" />} /> 
          <Route path="/buspass/plan" element={isUserAuthenticated() ? <Plan /> : <Navigate to="/login" />} />
          <Route path="/buspass/addon" element={isUserAuthenticated() ? <Addon /> : <Navigate to="/login" />} />

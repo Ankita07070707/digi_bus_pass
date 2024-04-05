@@ -29,10 +29,10 @@ const PaymentSuccess = () => {
             <p>Reference Number : {referenceNumber}</p>
             <div class="py-10 text-center">
               <a
-                href="/"
+                href="/dashboard/userbuspass"
                 class="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3"
               >
-                GO BACK
+                View Your Pass
               </a>
             </div>
           </div>

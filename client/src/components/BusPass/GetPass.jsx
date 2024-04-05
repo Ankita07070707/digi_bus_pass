@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import busRoute from "./BusRoute.json";
+import moment from "moment";
 
 function GetPass() {
   const formArray = [1, 2, 3, 4];
@@ -29,6 +30,7 @@ function GetPass() {
     lastName,
     year,
     branch,
+    image,
     phno,
     address,
     busFrom,
@@ -37,18 +39,57 @@ function GetPass() {
     studentId,
   } = user;
 
+  const parsedValidDate = moment().add(6, "months").format("DD/MM/YYYY");
+
   const onInputChange = (e) => {
-    setUser({
-      ...user,
-      [e.target.name]: e.target.value,
-    });
+    // const regex = /^[A-Za-z]+$/;
+    // if (e.target.name === "firstName" || e.target.name === "lastName") {
+    //   if (!regex.test(e.target.value)) {
+    //     // If input contains non-letter characters, do not update the state
+    //     return;
+    //   }
+    // }
+    // setUser({
+    //   ...user,
+    //   [e.target.name]: e.target.value,
+    // });
+    const { name, value } = e.target;
+
+    // Validation for allowing only letters in firstName and lastName
+    if (name === "firstName" || name === "lastName") {
+      if (/^[a-zA-Z]+$/.test(value) || value === "") {
+        setUser({
+          ...user,
+          [name]: value,
+        });
+      }
+    }
+    // Validation for allowing only 10 numbers in phno
+    else if (name === "phno") {
+      const phoneNumber = value.replace(/\D/g, ""); // Remove non-digit characters
+      if (phoneNumber.length <= 10 || value === "") {
+        setUser({
+          ...user,
+          [name]: phoneNumber,
+        });
+      }
+    }
+    // For other fields without specific validation
+    else {
+      setUser({
+        ...user,
+        [name]: value,
+      });
+    }
   };
+
   const next = () => {
     if (
       formNo === 1 &&
       user.firstName &&
       user.lastName &&
       user.phno &&
+      // user.image &&
       user.year &&
       user.branch
     ) {
@@ -92,18 +133,6 @@ function GetPass() {
       ...user,
       busDestination: selectedStop.stop_name, // Set busDestination to selected stop name
     }); // Set the stop name
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert(
-      "Get Country id: " +
-        cityid +
-        ", City Name: " +
-        cityName +
-        ", Stop Name: " +
-        stopName
-    );
   };
 
   const key_id = "rzp_test_gm6wW5pGrWRFjz";
@@ -274,12 +303,9 @@ function GetPass() {
           <div>
             <div className="space-y-12">
               <div className="border-b border-gray-900/10 pb-12">
-                <h2 className="text-base font-semibold leading-7 text-gray-900">
-                  Personal Information
-                </h2>
-                <p className="mt-1 text-sm leading-6 text-gray-600">
-                  Use a permanent address where you can receive mail.
-                </p>
+                <h1 className="text-lg font-semibold leading-7 text-gray-900 text-center">
+                  Fill Your Personal Information
+                </h1>
 
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                   <div className="sm:col-span-3">
@@ -287,7 +313,7 @@ function GetPass() {
                       htmlFor="firstName"
                       className="block text-sm font-medium leading-6 text-gray-900"
                     >
-                      First name
+                      First Name
                     </label>
                     <div className="mt-2">
                       <input
@@ -307,7 +333,7 @@ function GetPass() {
                       htmlFor="lastName"
                       className="block text-sm font-medium leading-6 text-gray-900"
                     >
-                      Last name
+                      Last Name
                     </label>
                     <div className="mt-2">
                       <input
@@ -316,6 +342,45 @@ function GetPass() {
                         id="lastName"
                         value={lastName}
                         onChange={(e) => onInputChange(e)}
+                        autoComplete="family-name"
+                        className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+                  </div>
+
+                  {/* <div className="sm:col-span-3">
+                    <label
+                      htmlFor="image"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Upload Profile Photo
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        type="file"
+                        accept="image/png, image/jpeg"
+                        name="image"
+                        value={image}
+                        onChange={(e) => onInputChange(e)}
+                        id="image"
+                        className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-yellow-600 sm:text-sm sm:leading-6"
+                      />
+                    </div>
+                  </div> */}
+                  <div className="sm:col-span-3">
+                    <label
+                      htmlFor="phno"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Phone Number
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        type="number"
+                        name="phno"
+                        value={phno}
+                        onChange={(e) => onInputChange(e)}
+                        id="phno"
                         autoComplete="family-name"
                         className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
@@ -385,26 +450,6 @@ function GetPass() {
                     </div>
                   </div>
 
-                  <div className="sm:col-span-3">
-                    <label
-                      htmlFor="phno"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Phone Number
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        type="number"
-                        name="phno"
-                        value={phno}
-                        onChange={(e) => onInputChange(e)}
-                        id="phno"
-                        autoComplete="family-name"
-                        className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
-                    </div>
-                  </div>
-
                   <div className="col-span-full">
                     <label
                       htmlFor="address"
@@ -443,12 +488,9 @@ function GetPass() {
           <div>
             <div className="space-y-12">
               <div className="border-b border-gray-900/10 pb-12">
-                <h2 className="text-base font-semibold leading-7 text-gray-900">
-                  Bus Information
-                </h2>
-                <p className="mt-1 text-sm leading-6 text-gray-600">
-                  Use a permanent address where you can receive mail.
-                </p>
+                <h1 className="text-lg font-semibold leading-7 text-gray-900 text-center">
+                  Select Your Destination
+                </h1>
 
                 <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                   <div className="sm:col-span-3">
@@ -539,12 +581,9 @@ function GetPass() {
           <div>
             <div className="space-y-12">
               <div className="px-4 sm:px-0">
-                <h3 className="text-base font-semibold leading-7 text-gray-900">
-                  Applicant Information
-                </h3>
-                <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
-                  Personal details and application.
-                </p>
+                <h1 className="text-lg font-semibold leading-7 text-gray-900 text-center">
+                  Validate Your Bus Pass
+                </h1>
               </div>
               <div className="mt-6 border-t border-gray-100">
                 <dl className="divide-y divide-gray-100">
@@ -570,6 +609,14 @@ function GetPass() {
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                       {busFrom} to {stopName},{cityName}
+                    </dd>
+                  </div>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">
+                      Valid Date:
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                      {parsedValidDate}
                     </dd>
                   </div>
                   <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -605,12 +652,12 @@ function GetPass() {
           <div>
             <div className="space-y-12">
               <div className="border-b border-gray-900/10 pb-12">
-                <h2 className="text-base font-semibold leading-7 text-gray-900">
-                  Payment
-                </h2>
-                <p className="mt-1 text-sm leading-6 text-gray-600">
+                <h1 className="text-lg font-semibold leading-7 text-gray-900 text-center">
                   Payment Details
-                </p>
+                </h1>
+                <div className="text-xl text-center font-mono justify-center align-text-bottom">
+                  You have to pay ₹{stopAmount}
+                </div>
               </div>
             </div>
 
