@@ -45,7 +45,7 @@ exports.paymentVerification = async (req, res) => {
       req.body;
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
-
+    const id = req.user.id;
     const generated_signature = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(body.toString())
@@ -57,7 +57,7 @@ exports.paymentVerification = async (req, res) => {
 
     if (generated_signature === razorpay_signature) {
       // Find the logged-in user (replace "loggedInUserId" with the actual way you identify the user)
-      const id = req.user.id; // Assuming user ID is available in req.user
+      // Assuming user ID is available in req.user
       const studentDetails = await Student.findOne({ _id: id });
       console.log(typeof studentDetails);
       const PaymentProfile = await Payment.findById(
@@ -78,6 +78,7 @@ exports.paymentVerification = async (req, res) => {
         razorpay_payment_id,
         razorpay_signature,
         amount,
+
         createdAt: Date.now(),
       };
 

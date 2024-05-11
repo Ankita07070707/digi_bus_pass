@@ -2,15 +2,47 @@ const { validationResult } = require("express-validator");
 const Student = require("../models/Student");
 const BussPass = require("../models/Profile");
 const StudentProfile = require("../models/Profile");
+const Payment = require("../models/Paymnet");
 const moment = require("moment");
 
 exports.applyForBusPass = async (req, res) => {
   try {
-    const { busFrom, busDestination, validDate, applyDate } = req.body;
+    const {
+      busFrom,
+      busDestination,
+      validDate,
+      applyDate,
+      firstName,
+      lastName,
+      year,
+      branch,
+      phno,
+      address,
+      amount,
+      busPassDuration,
+    } = req.body;
     const id = req.user.id;
-    const { firstName, lastName, year, branch, phno, address, studentId } =
-      req.body;
-    const parsedValidDate = moment().add(6, "months").format("DD/MM/YYYY");
+    console.log(busPassDuration);
+    // const { firstName, lastName, year, branch, phno, address, studentId } =
+    //   req.body;
+
+    // if (
+    //   !busFrom ||
+    //   !busDestination ||
+    //   !firstName ||
+    //   !lastName ||
+    //   !year ||
+    //   !branch ||
+    //   !phno ||
+    //   !address
+    // ) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Missing required fields",
+    //   });
+    // }
+
+    let parsedValidDate = moment().add(1, "months").format("DD/MM/YYYY");
 
     const studentDetails = await Student.findOne({ _id: id });
     // console.log(studentDetails);
@@ -18,6 +50,16 @@ exports.applyForBusPass = async (req, res) => {
     const studentProfile = await StudentProfile.findById(
       studentDetails.additionalDetails
     );
+
+    if (busPassDuration === "1") {
+      parsedValidDate = moment().add(1, "months").format("DD/MM/YYYY");
+    }
+    if (busPassDuration === "3") {
+      parsedValidDate = moment().add(3, "months").format("DD/MM/YYYY");
+    }
+    if (busPassDuration === "6") {
+      parsedValidDate = moment().add(6, "months").format("DD/MM/YYYY");
+    }
 
     // const StudentInfo = await StudentProfile.findById({ _id: id });
     const busPassId = generateBusPassId();
@@ -28,8 +70,8 @@ exports.applyForBusPass = async (req, res) => {
       busDestination,
       applyDate: new Date(),
       validDate: parsedValidDate,
+      busPassDuration,
     };
-
     const newStudentProfile = new StudentProfile({
       firstName,
       lastName,
@@ -38,7 +80,10 @@ exports.applyForBusPass = async (req, res) => {
       phno,
       address,
       status: "Approved",
-      isAvailable: "Yes", // For Default
+      isAvailable: "Yes",
+      studentID: id,
+
+      // For Default
     });
 
     // Save the new student profile instance to the database
@@ -126,6 +171,45 @@ exports.renewBusPass = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Something went wrong while renewing the bus pass",
+    });
+  }
+};
+
+exports.UserPass = async (req, res) => {
+  try {
+    const id = req.user.id; // Assuming user ID is available in req.user.id
+
+    const studentData = await Student.findOne({ _id: id });
+    // console.log(studentDetails);
+
+    const studentProfile = await StudentProfile.findOne({ studentID: id });
+
+    const PaymentInfo = await Payment.findOne(studentData.paymentDoneDetails);
+
+    console.log(PaymentInfo);
+    // console.log(studentDetails.studentId);
+    // console.log(studentDetails.additionalDetails);
+
+    console.log(studentProfile);
+    // console.log(userBusPasses);
+    if (!studentProfile) {
+      return res.status(404).json({
+        success: false,
+        message: "Student profile not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "User bus passes retrieved successfully",
+      data: studentProfile,
+      studentData,
+      PaymentInfo,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
     });
   }
 };

@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
   const [studentDetails, setStudentDetails] = useState({});
   const token = localStorage.getItem("token");
-
   const getStudentDetails = async () => {
     try {
       const response = await axios.get(
@@ -69,7 +68,7 @@ const Dashboard = () => {
                 </a>
               </div>
 
-              <div className="grid grid-cols-2 gap-6">
+              {/* <div className="grid grid-cols-2 gap-6">
                 <div className="">
                   <h1>Bus Pass History</h1>
                   {studentDetails.studentProfile &&
@@ -129,7 +128,7 @@ const Dashboard = () => {
                       </ul>
                     )}
                 </div>
-              </div>
+              </div> */}
             </>
           )}
         </div>

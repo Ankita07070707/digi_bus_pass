@@ -1,3 +1,4 @@
+//
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,7 +22,7 @@ function GetPass() {
     busFrom: "DKTE Rajwada",
     busDestination: "",
     validDate: "",
-
+    busPassDuration: "",
     studentId: "",
   });
 
@@ -37,22 +38,10 @@ function GetPass() {
     busDestination,
     validDate,
     studentId,
+    busPassDuration,
   } = user;
 
-  const parsedValidDate = moment().add(6, "months").format("DD/MM/YYYY");
-
   const onInputChange = (e) => {
-    // const regex = /^[A-Za-z]+$/;
-    // if (e.target.name === "firstName" || e.target.name === "lastName") {
-    //   if (!regex.test(e.target.value)) {
-    //     // If input contains non-letter characters, do not update the state
-    //     return;
-    //   }
-    // }
-    // setUser({
-    //   ...user,
-    //   [e.target.name]: e.target.value,
-    // });
     const { name, value } = e.target;
 
     // Validation for allowing only letters in firstName and lastName
@@ -111,9 +100,12 @@ function GetPass() {
   const [cityid, setCityid] = useState("");
   const [stop, setStop] = useState([]);
   const [stopid, setStopid] = useState("");
-  const [stopAmount, setStopAmount] = useState(0);
   const [cityName, setCityName] = useState("");
   const [stopName, setStopName] = useState("");
+  const [stopAmount, setStopAmount] = useState(0);
+  const [passDuration, setPassDuration] = useState("");
+  const [passAmount, setPassAmount] = useState(0);
+  const [parsedValidDate, setParsedValidDate] = useState("");
 
   const handlecity = (e) => {
     const getCityid = e.target.value;
@@ -135,6 +127,30 @@ function GetPass() {
     }); // Set the stop name
   };
 
+  const handlePassDurationChange = (e) => {
+    const selectedDuration = e.target.value;
+    setPassDuration(selectedDuration); // Set selected pass duration
+
+    setUser({
+      ...user,
+      busPassDuration: selectedDuration,
+    });
+    // Calculate pass amount based on stop amount and selected pass duration
+
+    if (selectedDuration === "1") {
+      setParsedValidDate(moment().add(1, "months").format("DD/MM/YYYY"));
+      setPassAmount(stopAmount * 1);
+    }
+    if (selectedDuration === "3") {
+      setParsedValidDate(moment().add(3, "months").format("DD/MM/YYYY"));
+      setPassAmount(stopAmount * 3);
+    }
+    if (selectedDuration === "6") {
+      setParsedValidDate(moment().add(6, "months").format("DD/MM/YYYY"));
+      setPassAmount(stopAmount * 6);
+    }
+  };
+
   const key_id = "rzp_test_gm6wW5pGrWRFjz";
 
   const handleDonate = async (e) => {
@@ -144,7 +160,7 @@ function GetPass() {
       console.log(token);
       const response = await axios.post(
         "http://localhost:8000/api/v1/payment/checkout",
-        { amount: stopAmount },
+        { amount: passAmount },
         {
           headers: {
             authorization: `${token}`,
@@ -243,29 +259,6 @@ function GetPass() {
       console.log(error);
     } finally {
       setLoading(false); // Whether the request succeeded or not, set loading to false
-    }
-  };
-
-  const finalSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true); // Set loading to true when starting the request
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/api/v1/buspass/applyForBusPass",
-        user,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
-          },
-        }
-      );
-      console.log(response.data);
-      alert("Student Details Updated Successfully");
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -531,7 +524,6 @@ function GetPass() {
                             </option>
                           ))}
                         </select>
-                        <p>Amount: {stopAmount}</p>
                       </div>
                     </div>
                   </div>
@@ -557,6 +549,46 @@ function GetPass() {
                     </div>
                   </div>
                 </div>
+              </div>
+              <div className="flex justify-center space-x-4">
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    className="form-radio text-indigo-600"
+                    name="passDuration"
+                    value="1"
+                    onChange={handlePassDurationChange}
+                  />
+                  <span className="ml-2">1 Month Pass</span>
+                </label>
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    className="form-radio text-indigo-600"
+                    name="passDuration"
+                    value="3"
+                    onChange={handlePassDurationChange}
+                  />
+                  <span className="ml-2">3 Month Pass</span>
+                </label>
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    className="form-radio text-indigo-600"
+                    name="passDuration"
+                    value="6"
+                    onChange={handlePassDurationChange}
+                  />
+                  <span className="ml-2">6 Month Pass</span>
+                </label>
+              </div>
+              {/* Display pass amount */}
+              <div className="mt-4 text-center">
+                {passAmount > 0 && (
+                  <p className="text-lg font-semibold text-gray-900">
+                    Pass Amount: {passAmount}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -624,7 +656,7 @@ function GetPass() {
                       Total Amount
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      ₹ {stopAmount}
+                      ₹ {passAmount}
                     </dd>
                   </div>
                 </dl>
@@ -656,7 +688,7 @@ function GetPass() {
                   Payment Details
                 </h1>
                 <div className="text-xl text-center font-mono justify-center align-text-bottom">
-                  You have to pay ₹{stopAmount}
+                  You have to pay ₹{passAmount}
                 </div>
               </div>
             </div>
