@@ -4,6 +4,111 @@ const BussPass = require("../models/Profile");
 const StudentProfile = require("../models/Profile");
 const Payment = require("../models/Paymnet");
 const moment = require("moment");
+const { uploadToCloudinary } = require("../utils/cloudinary");
+
+// exports.applyForBusPass = async (req, res) => {
+//   try {
+//     // Check for uploaded image
+//     // const avatar = req.file ? req.file.path : null;
+//     // console.log(avatar);
+
+//     // if (!avatar) {
+//     //   return res.status(400).json({
+//     //     success: false,
+//     //     message: "Image file is required",
+//     //   });
+//     // }
+
+//     // // Upload image to Cloudinary
+//     // const uploadedImage = await uploadToCloudinary(avatar);
+
+//     const {
+//       busFrom,
+//       busDestination,
+//       validDate,
+//       applyDate,
+//       firstName,
+//       lastName,
+//       year,
+//       branch,
+//       phno,
+//       address,
+//       amount,
+//       busPassDuration,
+//     } = req.body;
+//     const id = req.user.id;
+//     // console.log(busPassDuration);
+
+//     let parsedValidDate = moment().add(1, "months").format("DD/MM/YYYY");
+
+//     const studentDetails = await Student.findOne({ _id: id });
+//     // console.log(studentDetails);
+
+//     const studentProfile = await StudentProfile.findById(
+//       studentDetails.additionalDetails
+//     );
+
+//     if (busPassDuration === "1") {
+//       parsedValidDate = moment().add(1, "months").format("DD/MM/YYYY");
+//     }
+//     if (busPassDuration === "3") {
+//       parsedValidDate = moment().add(3, "months").format("DD/MM/YYYY");
+//     }
+//     if (busPassDuration === "6") {
+//       parsedValidDate = moment().add(6, "months").format("DD/MM/YYYY");
+//     }
+
+//     const busPassId = generateBusPassId();
+
+//     const busPass = {
+//       busPassId,
+//       busFrom,
+//       busDestination,
+//       applyDate: new Date(),
+//       validDate: parsedValidDate,
+//       busPassDuration,
+//     };
+//     const newStudentProfile = new StudentProfile({
+//       firstName,
+//       lastName,
+//       year,
+//       branch,
+//       phno,
+//       address,
+//       // avatar: uploadedImage.url,
+
+//       status: "Approved",
+//       isAvailable: "Yes",
+//       studentID: id,
+//     });
+
+//     // Save the new student profile instance to the database
+
+//     newStudentProfile.bussPass.push(busPass);
+//     console.log("Data Pushed");
+//     await newStudentProfile.save();
+
+//     console.log("Data saved");
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Bus Pass Applied Successfully",
+//       data: studentProfile,
+//     });
+//   } catch (error) {
+//     console.log(error.message);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Internal Server Error",
+//     });
+//   }
+// };
+
+// function generateBusPassId() {
+//   const randomNum = Math.floor(Math.random() * 9000) + 1000;
+//   const busPassId = `DKTE${randomNum}`;
+//   return busPassId;
+// }
 
 exports.applyForBusPass = async (req, res) => {
   try {

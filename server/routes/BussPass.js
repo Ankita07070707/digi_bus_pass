@@ -6,9 +6,10 @@ const {
   UserPass,
 } = require("../controllers/BussPass");
 const { auth } = require("../middlewares/auth");
-
+const { uplaod } = require("../middlewares/multer");
 router.post("/renewBusPass", auth, renewBusPass);
 router.post("/applyForBusPass", auth, applyForBusPass);
+// router.get("/pass", upload.single("file"), auth, UserPass);
 router.get("/pass", auth, UserPass);
 
 module.exports = router;
