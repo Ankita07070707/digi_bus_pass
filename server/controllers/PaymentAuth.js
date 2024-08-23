@@ -92,7 +92,7 @@ exports.paymentVerification = async (req, res) => {
       // );
       res.status(200).json({
         success: true,
-        redirectUrl: `http://localhost:5173/paymentsuccess?reference=${razorpay_payment_id}`,
+        redirectUrl: `https://digital-bus-pass.onrender.com/paymentsuccess?reference=${razorpay_payment_id}`,
       });
     } else {
       return res.status(200).json({

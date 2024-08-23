@@ -43,7 +43,7 @@ router.post("/forgot-password", async (req, res) => {
     const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
       expiresIn: "5m",
     });
-    const link = `http://localhost:8000/api/v1/auth/reset-password/${oldUser._id}/${token}`;
+    const link = `https://digital-bus-pass.onrender.com/api/v1/auth/reset-password/${oldUser._id}/${token}`;
 
     // Create a mailsender instance with your email credentials
 
