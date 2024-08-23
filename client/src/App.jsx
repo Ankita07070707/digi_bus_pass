@@ -19,7 +19,7 @@ import GetPass from "./components/BusPass/GetPass";
 import UserBusPass from "./components/Dashboard/UserBusPass.jsx";
 import NotFound from "./components/Home/NotFound";
 import PaymentSuccess from "./components/Payment/PaymentSuccess.jsx";
-import ForgotPassword from "./components/auth/forgotPassword.jsx";
+import ForgotPassword from "./components/auth/ForgotPassword.jsx";
 
 // import Profile from '../src/components/BusPass/pages/info';
 // import Plan from '../src/components/BusPass/pages/plan';
