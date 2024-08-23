@@ -5,6 +5,11 @@ const PaymentSuccess = () => {
   const searchQuery = useSearchParams()[0];
   const referenceNumber = searchQuery.get("reference");
 
+  const userJSON = localStorage.getItem("user");
+  const user = JSON.parse(userJSON);
+  const userId = user._id;
+  console.log(userId);
+
   return (
     <>
       <div class="bg-gray-100 h-screen mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
@@ -29,7 +34,7 @@ const PaymentSuccess = () => {
             <p>Reference Number : {referenceNumber}</p>
             <div class="py-10 text-center">
               <a
-                href="/dashboard/userbuspass"
+                href={`/dashboard/userbuspass/${userId}`}
                 class="px-12 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3"
               >
                 View Your Pass

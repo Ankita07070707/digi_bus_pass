@@ -3,6 +3,9 @@
 import Footer from "./Footer";
 
 const Home = () => {
+  const isUserAuthenticated = () => {
+    return localStorage.getItem("token") !== null;
+  };
   return (
     <>
       <section className="relative bg-[url(https://www.dkte.ac.in/images/phocagallery/thumbs/phoca_thumb_l_college-bus.jpg)] bg-cover bg-center bg-no-repeat">
@@ -22,14 +25,21 @@ const Home = () => {
                 and renewal bus passes without standing in a line for hours near
                 counters in colleges.
               </p>
+
               <div class="mt-5">
-                <a
-                  href="/signup"
-                >
+                {isUserAuthenticated() ? (
+                  <a href="/dashboard">
                     <button class="hover:bg-yellow-400 bg-white text-light font-semibold hover:text-dark py-2 px-4 border border-light-500 rounded">
-                  Get Started
-                </button>
-                </a>
+                      Get Started
+                    </button>
+                  </a>
+                ) : (
+                  <a href="/signup">
+                    <button class="hover:bg-yellow-400 bg-white text-light font-semibold hover:text-dark py-2 px-4 border border-light-500 rounded">
+                      Get Started
+                    </button>
+                  </a>
+                )}
               </div>
             </div>
           </div>

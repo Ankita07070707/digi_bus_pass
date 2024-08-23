@@ -4,7 +4,13 @@ import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [studentDetails, setStudentDetails] = useState({});
+  const [isPaymentDone, setIsPaymentDone] = useState(false);
   const token = localStorage.getItem("token");
+
+  const userJSON = localStorage.getItem("user");
+  const user = JSON.parse(userJSON);
+  const userId = user._id;
+
   const getStudentDetails = async () => {
     try {
       const response = await axios.get(
@@ -28,6 +34,10 @@ const Dashboard = () => {
   useEffect(() => {
     getStudentDetails();
   }, []);
+
+  const getPaymentDone = () => {
+    return user.paymentDoneDetails !== null;
+  };
 
   console.log("Student Profile", studentDetails.studentProfile);
 
@@ -60,12 +70,21 @@ const Dashboard = () => {
                   alignItems: "center",
                 }}
               >
-                <a
-                  href="/buspass/getpass"
-                  className="rounded-md bg-yellow-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
-                >
-                  Click Here To Get Bus Pass
-                </a>
+                {getPaymentDone() ? (
+                  <Link
+                    to={`/dashboard/userbuspass/${userId}`}
+                    className="rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+                  >
+                    View Your Bus Pass
+                  </Link>
+                ) : (
+                  <a
+                    href="/buspass/getpass"
+                    className="rounded-md bg-yellow-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-yellow-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
+                  >
+                    Click Here To Get Bus Pass
+                  </a>
+                )}
               </div>
 
               {/* <div className="grid grid-cols-2 gap-6">

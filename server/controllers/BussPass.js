@@ -147,7 +147,7 @@ exports.applyForBusPass = async (req, res) => {
     //   });
     // }
 
-    let parsedValidDate = moment().add(1, "months").format("DD/MM/YYYY");
+    let parsedValidDate = moment().add(1, "months").format("MM/DD/YYYY");
 
     const studentDetails = await Student.findOne({ _id: id });
     // console.log(studentDetails);
@@ -157,13 +157,13 @@ exports.applyForBusPass = async (req, res) => {
     );
 
     if (busPassDuration === "1") {
-      parsedValidDate = moment().add(1, "months").format("DD/MM/YYYY");
+      parsedValidDate = moment().add(1, "months").format("MM/DD/YYYY");
     }
     if (busPassDuration === "3") {
-      parsedValidDate = moment().add(3, "months").format("DD/MM/YYYY");
+      parsedValidDate = moment().add(3, "months").format("MM/DD/YYYY");
     }
     if (busPassDuration === "6") {
-      parsedValidDate = moment().add(6, "months").format("DD/MM/YYYY");
+      parsedValidDate = moment().add(6, "months").format("MM/DD/YYYY");
     }
 
     // const StudentInfo = await StudentProfile.findById({ _id: id });
@@ -282,7 +282,7 @@ exports.renewBusPass = async (req, res) => {
 
 exports.UserPass = async (req, res) => {
   try {
-    const id = req.user.id; // Assuming user ID is available in req.user.id
+    const id = req.params.id; // Get the id from URL
 
     const studentData = await Student.findOne({ _id: id });
     // console.log(studentDetails);

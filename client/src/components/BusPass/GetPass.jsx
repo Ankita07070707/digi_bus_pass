@@ -169,7 +169,7 @@ function GetPass() {
       console.log(token);
       const response = await axios.post(
         "http://localhost:8000/api/v1/payment/checkout",
-        { amount: stopAmount },
+        { amount: passAmount },
         {
           headers: {
             authorization: `${token}`,
@@ -721,7 +721,7 @@ function GetPass() {
                   Payment Details
                 </h1>
                 <div className="text-xl text-center font-mono justify-center align-text-bottom">
-                  You have to pay ₹{stopAmount}
+                  You have to pay ₹{passAmount}
                 </div>
               </div>
             </div>

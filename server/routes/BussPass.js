@@ -10,6 +10,6 @@ const { uplaod } = require("../middlewares/multer");
 router.post("/renewBusPass", auth, renewBusPass);
 router.post("/applyForBusPass", auth, applyForBusPass);
 // router.get("/pass", upload.single("file"), auth, UserPass);
-router.get("/pass", auth, UserPass);
+router.get("/pass/:id", auth, UserPass);
 
 module.exports = router;

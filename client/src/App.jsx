@@ -72,7 +72,7 @@ function App() {
 
           {/* user pass  */}
           <Route
-            path="/dashboard/userbuspass"
+            path="/dashboard/userbuspass/:id"
             element={
               isUserAuthenticated() ? <UserBusPass /> : <Navigate to="/login" />
             }

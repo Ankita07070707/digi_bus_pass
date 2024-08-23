@@ -1,23 +1,27 @@
 import React, { useRef } from "react";
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import logo from "../../../src/assets/dkte-logo.png";
 import axios from "axios";
 
 const UserBusPass = () => {
+  const { id } = useParams();
   const pdfRef = useRef();
   const [buspass, setBuspass] = useState([]);
   const [studentDetail, setstudentDetail] = useState([]);
   const [student, setStudent] = useState([]);
   const [paymentData, setpaymentData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const token = localStorage.getItem("token");
 
   const generateInvoice = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/v1/buspass/pass",
+        `http://localhost:8000/api/v1/buspass/pass/${id}`,
         {
           headers: {
             Authorization: `${token}`,
@@ -35,7 +39,7 @@ const UserBusPass = () => {
 
   useEffect(() => {
     generateInvoice();
-  }, []);
+  }, [id, token]);
 
   const downloadPDF = () => {
     const input = pdfRef.current;
@@ -57,9 +61,12 @@ const UserBusPass = () => {
         imgWidth * ratio,
         imgHeight * ratio
       );
-      pdf.save("DKTE-BUSPASS.pdf");
+      pdf.save(`DKTE${id}-BUSPASS.pdf`);
     });
   };
+
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error: {error}</p>;
 
   return (
     <>
