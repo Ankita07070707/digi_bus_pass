@@ -168,7 +168,7 @@ function GetPass() {
     try {
       console.log(token);
       const response = await axios.post(
-        "http://localhost:8000/api/v1/payment/checkout",
+        "https://digi-bus-pass-backend.onrender.com/api/v1/payment/checkout",
         { amount: passAmount },
         {
           headers: {
@@ -200,7 +200,7 @@ function GetPass() {
         handler: async (response) => {
           try {
             const verifyUrl =
-              "http://localhost:8000/api/v1/payment/paymentverification";
+              "https://digi-bus-pass-backend.onrender.com/api/v1/payment/paymentverification";
             const { data } = await axios.post(verifyUrl, response, {
               headers: {
                 "Content-Type": "application/json",
@@ -216,7 +216,7 @@ function GetPass() {
               setLoading(true); // Set loading to true when starting the request
               try {
                 const response = await axios.post(
-                  "http://localhost:8000/api/v1/buspass/applyForBusPass",
+                  "https://digi-bus-pass-backend.onrender.com/api/v1/buspass/applyForBusPass",
                   user,
                   {
                     headers: {
@@ -276,7 +276,7 @@ function GetPass() {
     setLoading(true); // Set loading to true when starting the request
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/buspass/applyForBusPass",
+        "https://digi-bus-pass-backend.onrender.com/api/v1/buspass/applyForBusPass",
         user,
         {
           headers: {
