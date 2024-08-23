@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "https://digital-bus-pass.onrender.com/",
+    origin: "https://digital-bus-pass.onrender.com",
     credentials: true,
   })
 );
@@ -28,7 +28,7 @@ app.use(
 app.use((req, res, next) => {
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://digital-bus-pass.onrender.com/"
+    "https://digital-bus-pass.onrender.com"
   );
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
