@@ -12,7 +12,8 @@ const ForgotPassword = () => {
 
   axios.defaults.withCredentials = true;
   const handleSubmit = (e) => {
-    const apiUrl = "http://localhost:8000/api/v1/auth/forgot-password";
+    const apiUrl =
+      "https://digi-bus-pass-backend.onrender.com/api/v1/auth/forgot-password";
 
     e.preventDefault();
     axios.post(

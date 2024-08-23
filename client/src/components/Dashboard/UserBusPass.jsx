@@ -21,7 +21,7 @@ const UserBusPass = () => {
   const generateInvoice = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/v1/buspass/pass/${id}`,
+        `https://digi-bus-pass-backend.onrender.com/api/v1/buspass/pass/${id}`,
         {
           headers: {
             Authorization: `${token}`,

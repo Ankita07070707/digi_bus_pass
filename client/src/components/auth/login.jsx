@@ -25,7 +25,7 @@ const login = () => {
     try {
       // Send a POST request to the server with user data
       const response = await axios.post(
-        "http://localhost:8000/api/v1/auth/login",
+        "https://digi-bus-pass-backend.onrender.com/api/v1/auth/login",
         user
       );
 

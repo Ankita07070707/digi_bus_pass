@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const logout = () => {
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/v1/auth/logout')
+    axios
+      .get("https://digi-bus-pass-backend.onrender.com/api/v1/auth/logout")
       .then((res) => {
         console.log(res.data);
         localStorage.removeItem("user");
@@ -16,14 +16,10 @@ const logout = () => {
       })
       .catch((err) => {
         console.log(err);
-      })
-  }, [])
+      });
+  }, []);
 
+  return <div></div>;
+};
 
-
-  return (
-    <div></div>
-  )
-}
-
-export default logout
+export default logout;
