@@ -26,10 +26,10 @@ app.use(
 
 // // middlewares
 app.use((req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://digital-bus-pass.onrender.com"
-  );
+  // res.setHeader(
+  //   "Access-Control-Allow-Origin",
+  //   "https://digital-bus-pass.onrender.com"
+  // );
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -38,6 +38,7 @@ app.use((req, res, next) => {
 });
 
 const path = require("path");
+const { url } = require("inspector");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
