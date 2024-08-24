@@ -20,22 +20,24 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "https://digital-bus-pass.onrender.com",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
 
 // // middlewares
-app.use((req, res, next) => {
-  // res.setHeader(
-  //   "Access-Control-Allow-Origin",
-  //   "https://digital-bus-pass.onrender.com"
-  // );
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  console.log("http method->" + req.method + ",URL->" + req.url);
-  next();
-});
+// app.use((req, res, next) => {
+//   // res.setHeader(
+//   //   "Access-Control-Allow-Origin",
+//   //   "https://digital-bus-pass.onrender.com"
+//   // );
+//   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+//   console.log("http method->" + req.method + ",URL->" + req.url);
+//   next();
+// });
 
 const path = require("path");
 const { url } = require("inspector");
