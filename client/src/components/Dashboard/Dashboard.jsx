@@ -36,7 +36,7 @@ const Dashboard = () => {
   }, []);
 
   const getPaymentDone = () => {
-    return user.paymentDoneDetails !== null;
+    return user.paymentDoneDetails === null;
   };
 
   console.log("Student Profile", studentDetails.studentProfile);
@@ -70,7 +70,7 @@ const Dashboard = () => {
                   alignItems: "center",
                 }}
               >
-                {getPaymentDone() ? (
+                {!getPaymentDone() ? (
                   <Link
                     to={`/dashboard/userbuspass/${userId}`}
                     className="rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
